@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import Movie from './Movie';
 
 const UpdateMovie = (props) => {
         const [item, setItem] = useState({id: '',
@@ -19,6 +20,15 @@ const UpdateMovie = (props) => {
         const handleChanges = event =>{
             setItem({...item, [event.target.name]:event.target.value})
         }
+
+        const handleStarChanges = (i, e) => {
+            const updatedStars = [...item.stars]
+            updatedStars[i] = e.target.value
+            setItem({
+                ...item,
+                stars: updatedStars
+            })
+        }
         
         const submitItem = e =>{
             e.preventDefault();
@@ -32,6 +42,7 @@ const UpdateMovie = (props) => {
         }
         return (
             <form onSubmit={submitItem}>
+                <label>Title: </label>
                 <input
                     type="text"
                     value={`${item.title}`}
@@ -39,6 +50,7 @@ const UpdateMovie = (props) => {
                     onChange={handleChanges}
                     placeholder="Title"
                 />
+                <label> Director: </label>
                 <input
                     type="text"
                     value={`${item.director}`}
@@ -46,6 +58,7 @@ const UpdateMovie = (props) => {
                     onChange={handleChanges}
                     placeholder="Director"
                 />
+                <label> Metascore: </label>
                 <input
                     type="text"
                     value={`${item.metascore}`}
@@ -53,6 +66,14 @@ const UpdateMovie = (props) => {
                     onChange={handleChanges}
                     placeholder="Metascore"
                 />
+                <label> Stars: </label>
+                {item.stars.map((star,i) => <input 
+                                                type="text"
+                                                value={`${item.stars[i]}`}
+                                                name={`star${i}`}
+                                                onChange={(e) => handleStarChanges(i, e)}
+                                                placeholder= {`star${i}`}
+                                            />)}
                 <button>Save</button>
             </form>
         )
